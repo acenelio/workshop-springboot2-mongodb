@@ -16,14 +16,18 @@ public class UserService {
 
 	@Autowired
 	private UserRepository repo;
+	
+	private static ObjectNotFoundException get() {
+		return new ObjectNotFoundException("Objeto não encontrado");
+	}
 
 	public List<User> findAll() {
 		return repo.findAll();
 	}
 
 	public User findById(String id) {
-		Optional<User> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+		Optional<User> obj = userRepository.findById(id);
+		return obj.orElseThrow(UserService::get);
 	}
 
 	public User insert(User obj) {
